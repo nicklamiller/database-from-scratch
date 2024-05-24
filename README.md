@@ -1,2 +1,2 @@
 # database-from-scratch
-Building SQLite DB from scratch in C.
+Building minimal SQLite DB from scratch in C. Following along https://cstack.github.io/db_tutorial/
