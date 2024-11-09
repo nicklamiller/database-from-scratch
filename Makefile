@@ -4,8 +4,11 @@ install-dev:
 		cp tools/pre-commit .git/hooks/pre-commit
 		chmod +x .git/hooks/pre-commit
 
-pre-commit:
+lint:
 		git-clang-format
+
+pre-commit:
+		make lint
 
 build:
 		gcc sqlite.c -o a.out

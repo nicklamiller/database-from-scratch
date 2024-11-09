@@ -53,6 +53,22 @@ describe 'database' do
           "Executed.",
           "db > ",
         ])
-      end      
+      end
+    
+
+    it 'prints an error message if id is negative' do
+        script = [
+          "insert -1 cstack foo@bar.com",
+          "select",
+          ".exit",
+        ]
+        result = run_script(script)
+        expect(result).to match_array([
+          "db > ID must be positive.",
+          "db > Executed.",
+          "db > ",
+        ])
+    end
+      
       
 end
