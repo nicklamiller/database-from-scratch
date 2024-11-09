@@ -1,4 +1,4 @@
-.PHONY: test
+.PHONY: install-dev lint pre-commit build test-only test
 
 install-dev:
 		cp tools/pre-commit .git/hooks/pre-commit
