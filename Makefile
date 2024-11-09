@@ -1,4 +1,4 @@
-.PHONY: test
+.PHONY: install-dev lint pre-commit build test-only test
 
 install-dev:
 		cp tools/pre-commit .git/hooks/pre-commit
@@ -11,7 +11,8 @@ pre-commit:
 		make lint
 
 build:
-		gcc sqlite.c -o a.out
+		cmake -S . -B build
+		cmake --build build
 
 test-only:
 		bundle exec rspec -f d

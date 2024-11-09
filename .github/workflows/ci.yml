@@ -1,0 +1,63 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  lint-build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Add repositories for GCC and Clang
+        run: |
+          sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
+          sudo apt-get update
+
+      - name: Install GCC 13.2 and Clang 15
+        run: |
+          sudo apt-get install -y gcc-13 g++-13 clang-15
+          sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-13 100
+          sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-13 100
+          sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-15 100
+
+      - name: Verify GCC and Clang Versions
+        run: |
+          gcc --version
+          clang --version
+
+      - name: Install Ruby 3.1.2
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.1.2'
+
+      - name: Install Ruby dependencies
+        run: |
+          gem install bundler
+          bundle install
+
+      - name: Install CMake
+        uses: jwlawson/actions-setup-cmake@v1
+        with:
+          cmake-version: '3.15'
+
+      - name: Install clang-format
+        run: |
+          sudo apt-get install -y clang-format
+          sudo ln -s $(which clang-format) /usr/local/bin/git-clang-format
+
+      - name: Run linter
+        run: make lint
+
+      - name: Build the project with C11 standard
+        run: |
+          cmake -DCMAKE_C_STANDARD=11 -S . -B build
+          cmake --build build
+
+      - name: Run tests
+        run: make test-only
