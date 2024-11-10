@@ -57,5 +57,8 @@ dkms.conf
 # Packaging
 build/
 
+# Testing
+test.db
+
 # Miscellaneous
 .DS_Store
