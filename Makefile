@@ -7,12 +7,13 @@ install-dev:
 lint:
 		git-clang-format
 
-pre-commit:
-		make lint
-
 build:
 		cmake -S . -B build
 		cmake --build build
+
+pre-commit:
+		make lint
+		make build
 
 test-only:
 		bundle exec rspec -f d
